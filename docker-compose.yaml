@@ -1,13 +1,27 @@
 version: '3.8'
 
 services:
+  reservations:
+      build:
+        context: .
+        dockerfile: ./apps/reservations/Dockerfile
+        target: ${NODE_ENV}
+      container_name: reservations-service
+      command: npm run start:dev reservations
+      ports:
+        - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
+      volumes:
+        - .:/usr/src/app
+      restart: always   
+
   mongodb:
     image: mongo
-    restart: always
+    container_name: reservations-mongo
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/var/lib/mongodb/data
+    restart: always  
 
 volumes:
   mongodb_data:
