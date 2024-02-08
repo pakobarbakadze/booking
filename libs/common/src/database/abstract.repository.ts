@@ -7,7 +7,7 @@ export abstract class AbstractRepository<T extends AbstractDocument> {
 
   constructor(protected readonly model: Model<T>) {}
 
-  async create(document: Omit<T, '_id'>): Promise<T> {
+  public async createAndSave(document: Partial<T>): Promise<T> {
     const createdDocument = new this.model({
       ...document,
       _id: new Types.ObjectId(),
@@ -15,7 +15,7 @@ export abstract class AbstractRepository<T extends AbstractDocument> {
     return (await createdDocument.save()).toJSON() as unknown as T;
   }
 
-  async findOne(filterQuery: FilterQuery<T>): Promise<T> {
+  public async findOne(filterQuery: FilterQuery<T>): Promise<T> {
     const document = await this.model.findOne(filterQuery).lean<T>(true);
 
     if (!document) {
@@ -26,7 +26,7 @@ export abstract class AbstractRepository<T extends AbstractDocument> {
     return document;
   }
 
-  async findOneAndUpdate(
+  public async findOneAndUpdate(
     filterQuery: FilterQuery<T>,
     update: UpdateQuery<T>,
   ): Promise<T> {
@@ -44,11 +44,11 @@ export abstract class AbstractRepository<T extends AbstractDocument> {
     return document;
   }
 
-  async find(filterQuery: FilterQuery<T>): Promise<T[]> {
+  public async find(filterQuery: FilterQuery<T>): Promise<T[]> {
     return this.model.find(filterQuery).lean<T[]>(true);
   }
 
-  async findOneAndDelete(filterQuery: FilterQuery<T>): Promise<T> {
+  public async findOneAndDelete(filterQuery: FilterQuery<T>): Promise<T> {
     return this.model.findOneAndDelete(filterQuery).lean<T>(true);
   }
 }

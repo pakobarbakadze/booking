@@ -12,16 +12,35 @@ services:
         - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
       volumes:
         - .:/usr/src/app
-      restart: always   
+        - /usr/src/app/node_modules
+      restart: always
+      networks:
+        - booking-network
 
-  mongodb:
+  reservations-mongo:
     image: mongo
     container_name: reservations-mongo
     ports:
       - "27017:27017"
     volumes:
-      - mongodb_data:/var/lib/mongodb/data
-    restart: always  
+      - mongodb_data:/var/lib/reservations/data
+    restart: always
+    networks:
+      - booking-network
+
+  auth-mongo:
+    image: mongo
+    container_name: auth-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/var/lib/auth/data
+    restart: always
+    networks:
+      - booking-network
 
 volumes:
   mongodb_data:
+
+networks:
+  booking-network:
