@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
-import { RefreshToken, User } from '../entities/user.entity';
-import { InsertRefreshToken } from '../types/type/refresh-token.type';
-import { UsersRepository } from '../users.repository';
+import { InsertRefreshToken } from '../../../types/type/refresh-token.type';
+import { RefreshToken, User } from '../../users/entities/user.entity';
+import { UsersRepository } from '../../users/users.repository';
 
 @Injectable()
 export class RefreshTokenService {
@@ -43,14 +43,9 @@ export class RefreshTokenService {
     const user = await this.usersRepository.findOne({ _id: userId });
     if (!user) throw new Error('User not found');
 
-    console.log(user.refresh_tokens);
-    console.log({ deviceId });
-
     user.refresh_tokens = user.refresh_tokens.filter(
       (refreshToken: RefreshToken) => refreshToken.deviceId !== deviceId,
     );
-
-    console.log(user.refresh_tokens);
 
     return this.usersRepository.findOneAndUpdate({ _id: user._id }, user);
   }

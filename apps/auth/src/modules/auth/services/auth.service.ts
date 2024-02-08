@@ -1,17 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from '../../../types/type/jwt-payload.type';
+import { User } from '../../users/entities/user.entity';
+import { UsersRepository } from '../../users/users.repository';
 import { SignUpDto } from '../dto/sign-up.dto';
-import { User } from '../entities/user.entity';
-import { JwtPayload } from '../types/type/jwt-payload.type';
-import { UsersRepository } from '../users.repository';
 import { RefreshTokenService } from './refresh-token.service';
-import { UsersService } from './users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
     private readonly usersRepository: UsersRepository,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly configSercive: ConfigService,

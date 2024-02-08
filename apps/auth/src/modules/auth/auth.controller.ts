@@ -9,13 +9,13 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { SignInDto } from '../dto/sign-in.dto';
-import { SignOutDto } from '../dto/sign-out.dto';
-import { SignUpDto } from '../dto/sign-up.dto';
-import { JwtAuthGuard } from '../guard/jwt-auth.guard';
-import { JwtRefreshTokenGuard } from '../guard/jwt-refresh.guard';
-import { LocalAuthGuard } from '../guard/local-auth.guard';
-import { AuthService } from '../services/auth.service';
+import { SignInDto } from './dto/sign-in.dto';
+import { SignOutDto } from './dto/sign-out.dto';
+import { SignUpDto } from './dto/sign-up.dto';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { JwtRefreshTokenGuard } from './guard/jwt-refresh.guard';
+import { LocalAuthGuard } from './guard/local-auth.guard';
+import { AuthService } from './services/auth.service';
 
 @Controller('auth')
 export class AuthController {

@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AuthModule } from './auth.module';
+import { AuthMicroModule } from './auth-micro.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthModule);
+  const app = await NestFactory.create(AuthMicroModule);
   await app.listen(3001);
 }
 bootstrap();
