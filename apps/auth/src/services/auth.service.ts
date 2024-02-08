@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from '../dto/sign-up.dto';
@@ -6,10 +6,12 @@ import { User } from '../entities/user.entity';
 import { JwtPayload } from '../types/type/jwt-payload.type';
 import { UsersRepository } from '../users.repository';
 import { RefreshTokenService } from './refresh-token.service';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly usersService: UsersService,
     private readonly usersRepository: UsersRepository,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly configSercive: ConfigService,
@@ -40,18 +42,6 @@ export class AuthService {
     return this.usersRepository.createAndSave(signUpDto);
   }
 
-  public async validateUser(username: string, password: string) {
-    const user = await this.usersRepository.findOne({ username });
-
-    if (!user) throw new UnauthorizedException('Invalid username or password');
-
-    if (await user.validatePassword(password)) {
-      return user;
-    }
-
-    return null;
-  }
-
   public async refreshAccessToken(
     authorization: string,
   ): Promise<{ access_token: string }> {
@@ -68,10 +58,11 @@ export class AuthService {
 
   public async invalidateToken(
     authorization: string,
+    devideId: string,
   ): Promise<{ message: string }> {
     const token = authorization.split(' ')[1];
     const decoded = await this.jwtService.verifyAsync(token);
-    await this.refreshTokenService.invalidate(decoded.sub, token);
+    await this.refreshTokenService.invalidate(decoded.sub, devideId);
 
     return { message: 'Token invalidated successfully' };
   }

@@ -14,10 +14,6 @@ export class User extends AbstractDocument {
 
   @Prop()
   refresh_tokens: RefreshToken[];
-
-  async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
-  }
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

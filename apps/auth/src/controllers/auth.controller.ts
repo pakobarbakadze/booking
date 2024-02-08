@@ -10,6 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SignInDto } from '../dto/sign-in.dto';
+import { SignOutDto } from '../dto/sign-out.dto';
 import { SignUpDto } from '../dto/sign-up.dto';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { JwtRefreshTokenGuard } from '../guard/jwt-refresh.guard';
@@ -34,8 +35,11 @@ export class AuthController {
 
   @Post('sign-out')
   @UseGuards(JwtAuthGuard)
-  invalidateToken(@Headers('authorization') authorization: string) {
-    return this.authService.invalidateToken(authorization);
+  invalidateToken(
+    @Headers('authorization') authorization: string,
+    @Body() signOutDto: SignOutDto,
+  ) {
+    return this.authService.invalidateToken(authorization, signOutDto.deviceId);
   }
 
   @Get('profile')

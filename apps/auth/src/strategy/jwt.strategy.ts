@@ -14,6 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, AuthStrategy.JWT) {
     private readonly usersService: UsersService,
     private readonly configService: ConfigService,
   ) {
+    console.log(configService.get<string>('ACCESS_JWT_SECRET'));
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -23,6 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, AuthStrategy.JWT) {
 
   async validate(payload: JwtPayload): Promise<User> {
     const user = await this.usersService.findOneWithId(payload.sub);
+
     if (!user) throw new UnauthorizedException();
 
     return user;
