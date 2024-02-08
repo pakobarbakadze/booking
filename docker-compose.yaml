@@ -10,37 +10,46 @@ services:
       command: npm run start:dev reservations
       ports:
         - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
+      depends_on:
+       - reservations-mongo
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
       restart: always
-      networks:
-        - booking-network
+
+  auth:
+      build:
+        context: .
+        dockerfile: ./apps/auth/Dockerfile
+        target: ${NODE_ENV}
+      container_name: auth-service
+      command: npm run start:dev auth
+      ports:
+        - 3001:3001
+      depends_on:
+       - auth-mongo  
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      restart: always     
 
   reservations-mongo:
     image: mongo
     container_name: reservations-mongo
     ports:
-      - "27017:27017"
+      - 27017:27017
     volumes:
       - mongodb_data:/var/lib/reservations/data
     restart: always
-    networks:
-      - booking-network
 
   auth-mongo:
     image: mongo
     container_name: auth-mongo
     ports:
-      - "27018:27017"
+      - 27018:27017
     volumes:
       - mongodb_data:/var/lib/auth/data
     restart: always
-    networks:
-      - booking-network
 
 volumes:
   mongodb_data:
-
-networks:
-  booking-network:
