@@ -35,7 +35,23 @@ services:
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
-      restart: always     
+      restart: always
+
+  payments:
+      build:
+        context: .
+        dockerfile: ./apps/payments/Dockerfile
+        target: ${NODE_ENV}
+      container_name: payments-service
+      command: npm run start:dev payments
+      env_file:
+        - ./apps/payments/.env
+      ports:
+        - ${PAYMENTS_PORT}:${PAYMENTS_PORT} 
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      restart: always         
 
   reservations-mongo:
     image: mongo
