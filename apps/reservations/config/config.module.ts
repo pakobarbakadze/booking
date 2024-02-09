@@ -7,14 +7,11 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        AUTH_PORT: Joi.number().required(),
+        RESERVATIONS_MONGODB_URI: Joi.string().required(),
+        AUTH_HOST: Joi.string().required(),
         AUTH_TCP_PORT: Joi.number().required(),
-        AUTH_MONGODB_URI: Joi.string().required(),
-        ACCESS_JWT_SECRET: Joi.string().required(),
-        REFRESH_JWT_SECRET: Joi.string().required(),
-        JWT_EXPIRATION: Joi.string().required(),
       }),
     }),
   ],
 })
-export class AuthConfigModule {}
+export class ReservationsConfigModule {}

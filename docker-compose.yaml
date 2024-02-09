@@ -8,10 +8,12 @@ services:
         target: ${NODE_ENV}
       container_name: reservations-service
       command: npm run start:dev reservations
+      depends_on:
+        - reservations-mongo
+      env_file:
+        - ./apps/reservations/.env
       ports:
         - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
-      depends_on:
-       - reservations-mongo
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -24,10 +26,12 @@ services:
         target: ${NODE_ENV}
       container_name: auth-service
       command: npm run start:dev auth
-      ports:
-        - 3001:3001
       depends_on:
-       - auth-mongo  
+        - auth-mongo
+      env_file:
+        - ./apps/auth/.env
+      ports:
+        - ${AUTH_PORT}:${AUTH_PORT} 
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules

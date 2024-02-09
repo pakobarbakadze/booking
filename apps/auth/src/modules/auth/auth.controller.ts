@@ -9,6 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignOutDto } from './dto/sign-out.dto';
 import { SignUpDto } from './dto/sign-up.dto';
@@ -52,5 +53,11 @@ export class AuthController {
   @UseGuards(JwtRefreshTokenGuard)
   refreshToken(@Headers('authorization') authorization: string) {
     return this.authService.refreshAccessToken(authorization);
+  }
+
+  @MessagePattern('authenticate')
+  @UseGuards(JwtAuthGuard)
+  async authenticate(@Payload() data: any) {
+    return data.user;
   }
 }
