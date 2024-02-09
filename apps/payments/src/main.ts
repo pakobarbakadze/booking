@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
@@ -10,6 +11,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.useLogger(app.get(Logger));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   app.connectMicroservice({
     transport: Transport.TCP,
