@@ -1,4 +1,4 @@
-import { CurrentUser } from '@app/common';
+import { CurrentUser, UserDto } from '@app/common';
 import { JwtAuthGuard } from '@app/common/auth';
 import {
   Body,
@@ -23,7 +23,7 @@ export class ReservationsController {
   @UseGuards(JwtAuthGuard)
   create(
     @Body() createReservationDto: CreateReservationDto,
-    @CurrentUser() user: User,
+    @CurrentUser() user: UserDto,
   ) {
     return this.reservationsService.create(createReservationDto, user);
   }

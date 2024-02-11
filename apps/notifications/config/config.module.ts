@@ -7,12 +7,13 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        STRIPE_SECRET_KEY: Joi.string().required(),
-        PAYMENTS_TCP_PORT: Joi.number().required(),
-        NOTIFICATIONS_HOST: Joi.string().required(),
         NOTIFICATIONS_TCP_PORT: Joi.number().required(),
+        GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
+        GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
+        GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
+        SMTP_USER: Joi.string().required(),
       }),
     }),
   ],
 })
-export class PaymentsConfigModule {}
+export class NotificationsConfigModule {}

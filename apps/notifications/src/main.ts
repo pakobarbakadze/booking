@@ -3,10 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import { Logger } from 'nestjs-pino';
-import { PaymentsModule } from './payments.module';
+import { NotificationsModule } from './notifications.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(PaymentsModule);
+  const app = await NestFactory.create(NotificationsModule);
 
   const configService = app.get(ConfigService);
 
@@ -17,7 +17,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: '0.0.0.0',
-      port: configService.get<number>('PAYMENTS_TCP_PORT'),
+      port: configService.get('NOTIFICATIONS_TCP_PORT'),
     },
   });
 

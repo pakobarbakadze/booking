@@ -51,7 +51,23 @@ services:
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
-      restart: always         
+      restart: always
+
+  notifications:
+      build:
+        context: .
+        dockerfile: ./apps/notifications/Dockerfile
+        target: ${NODE_ENV}
+      container_name: notifications-service
+      command: npm run start:dev notifications
+      env_file:
+        - ./apps/notifications/.env
+      ports:
+        - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT} 
+      volumes:
+        - .:/usr/src/app
+        - /usr/src/app/node_modules
+      restart: always
 
   reservations-mongo:
     image: mongo

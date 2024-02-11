@@ -9,6 +9,9 @@ export class User extends AbstractDocument {
   @Prop({ unique: true })
   username: string;
 
+  @Prop({ unique: true })
+  email: string;
+
   @Prop()
   password: string;
 
