@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ReservationsConfigModule } from '../config/config.module';
 import { ReservationsDbModule } from '../config/reservations-db.module';
-import { Reservation, ReservationSchema } from './entities/reservation.entity';
+import { Reservation } from './entities/reservation.entity';
 import { ReservationsController } from './reservations.controller';
 import { ReservationsRepository } from './reservations.repository';
 import { ReservationsService } from './reservations.service';
@@ -14,9 +14,7 @@ import { ReservationsService } from './reservations.service';
   imports: [
     ReservationsConfigModule,
     ReservationsDbModule,
-    ReservationsDbModule.forFeature([
-      { name: Reservation.name, schema: ReservationSchema },
-    ]),
+    ReservationsDbModule.forFeature([Reservation]),
     LoggerModule,
     ClientsModule.registerAsync([
       {

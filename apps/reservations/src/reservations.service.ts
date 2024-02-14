@@ -14,38 +14,36 @@ export class ReservationsService {
   ) {}
 
   public create(createReservationDto: CreateReservationDto, user: UserDto) {
-    const { _id, email } = user;
+    const { id, email } = user;
 
     return this.paymentsService
       .send('create_charge', { ...createReservationDto.charge, email })
       .pipe(
         map((res) => {
-          return this.reservationsRepository.createAndSave({
+          const reservation = this.reservationsRepository.create({
             ...createReservationDto,
             invoiceId: res.id,
-            timestamp: new Date(),
-            userId: _id,
+            userId: id,
           });
+
+          return this.reservationsRepository.save(reservation);
         }),
       );
   }
 
   public findAll() {
-    return this.reservationsRepository.find({});
+    return this.reservationsRepository.findAll();
   }
 
-  public findOne(_id: string) {
-    return this.reservationsRepository.findOne({ _id });
+  public findOne(id: string) {
+    return this.reservationsRepository.findBy({ id: +id });
   }
 
-  public update(_id: string, updateReservationDto: UpdateReservationDto) {
-    return this.reservationsRepository.findOneAndUpdate(
-      { _id },
-      { $set: updateReservationDto },
-    );
+  public update(id: string, updateReservationDto: UpdateReservationDto) {
+    return this.reservationsRepository.update(+id, updateReservationDto);
   }
 
-  public remove(_id: string) {
-    return this.reservationsRepository.findOneAndDelete({ _id });
+  public remove(id: string) {
+    return this.reservationsRepository.delete(+id);
   }
 }

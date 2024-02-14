@@ -1,20 +1,24 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({
+    TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('RESERVATIONS_MONGODB_URI'),
+        type: 'postgres',
+        url: configService.get('RESERVATIONS_POSTGRES_URL'),
+        synchronize: true,
+        autoLoadEntities: true,
       }),
       inject: [ConfigService],
     }),
   ],
 })
 export class ReservationsDbModule {
-  static forFeature(models: ModelDefinition[]) {
-    return MongooseModule.forFeature(models);
+  static forFeature(entities: EntityClassOrSchema[]) {
+    return TypeOrmModule.forFeature(entities);
   }
 }

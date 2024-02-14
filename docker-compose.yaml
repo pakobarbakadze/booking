@@ -9,7 +9,7 @@ services:
       container_name: reservations-service
       command: npm run start:dev reservations
       depends_on:
-        - reservations-mongo
+        - reservations-postgres
       env_file:
         - ./apps/reservations/.env
       # ports:
@@ -70,15 +70,6 @@ services:
         - /usr/src/app/node_modules
       restart: always
 
-  reservations-mongo:
-    image: mongo
-    container_name: reservations-mongo
-    ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data:/var/lib/reservations/data
-    restart: always
-
   auth-mongo:
     image: mongo
     container_name: auth-mongo
@@ -86,7 +77,20 @@ services:
       - 27018:27017
     volumes:
       - mongodb_data:/var/lib/auth/data
-    restart: always
+    restart: always    
+
+  reservations-postgres:
+    image: postgres
+    container_name: reservations-postgres
+    environment:
+      - POSTGRES_DB=${RESERVATIONS_DB_NAME}
+      - POSTGRES_USER=${RESERVATIONS_DB_USER}
+      - POSTGRES_PASSWORD=${RESERVATIONS_DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/reservations/data
+    ports:
+      - 5432:5432
+    restart: always  
 
   nginx-gateway:
     image: nginx
@@ -101,3 +105,5 @@ services:
 
 volumes:
   mongodb_data:
+  postgres_data:
+
