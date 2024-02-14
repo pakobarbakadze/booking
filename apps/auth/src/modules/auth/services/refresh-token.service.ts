@@ -16,13 +16,15 @@ export class RefreshTokenService {
     const userRecord = await this.usersRepository.findOne({ _id: user._id });
     if (!userRecord) throw new Error('User not found');
 
-    const existingToken = userRecord.refresh_tokens.find(
+    const tokenIndex = userRecord.refresh_tokens.findIndex(
       (refreshToken: RefreshToken) => refreshToken.deviceId === deviceId,
     );
-    if (existingToken) throw new Error('User is already logged in');
-
-    const refreshToken: RefreshToken = { token, deviceId };
-    userRecord.refresh_tokens.push(refreshToken);
+    if (tokenIndex !== -1) {
+      userRecord.refresh_tokens[tokenIndex].token = token;
+    } else {
+      const refreshToken: RefreshToken = { token, deviceId };
+      userRecord.refresh_tokens.push(refreshToken);
+    }
 
     return this.usersRepository.findOneAndUpdate({ _id: user._id }, userRecord);
   }

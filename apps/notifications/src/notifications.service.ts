@@ -27,5 +27,7 @@ export class NotificationsService {
       subject: 'Booking Notification',
       text,
     });
+
+    return { message: 'Email sent' };
   }
 }

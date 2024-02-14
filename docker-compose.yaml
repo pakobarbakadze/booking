@@ -12,8 +12,8 @@ services:
         - reservations-mongo
       env_file:
         - ./apps/reservations/.env
-      ports:
-        - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
+      # ports:
+        # - ${RESERVATIONS_PORT}:${RESERVATIONS_PORT}
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -25,13 +25,14 @@ services:
         dockerfile: ./apps/auth/Dockerfile
         target: ${NODE_ENV}
       container_name: auth-service
-      command: npm run start:dev auth
+      command: npm run start:debug auth
       depends_on:
         - auth-mongo
       env_file:
         - ./apps/auth/.env
       ports:
-        - ${AUTH_PORT}:${AUTH_PORT} 
+        # - ${AUTH_PORT}:${AUTH_PORT} 
+        - 9229:9229
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -46,8 +47,8 @@ services:
       command: npm run start:dev payments
       env_file:
         - ./apps/payments/.env
-      ports:
-        - ${PAYMENTS_PORT}:${PAYMENTS_PORT} 
+      # ports:
+        # - ${PAYMENTS_PORT}:${PAYMENTS_PORT}
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -62,8 +63,8 @@ services:
       command: npm run start:dev notifications
       env_file:
         - ./apps/notifications/.env
-      ports:
-        - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT} 
+      # ports:
+        # - ${NOTIFICATIONS_PORT}:${NOTIFICATIONS_PORT} 
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -86,6 +87,17 @@ services:
     volumes:
       - mongodb_data:/var/lib/auth/data
     restart: always
+
+  nginx-gateway:
+    image: nginx
+    container_name: nginx-gateway
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - reservations
+      - auth  
 
 volumes:
   mongodb_data:
