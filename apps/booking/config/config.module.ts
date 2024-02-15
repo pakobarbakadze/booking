@@ -7,7 +7,7 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        RESERVATIONS_POSTGRES_URL: Joi.string().required(),
+        BOOKING_POSTGRES_URL: Joi.string().required(),
         AUTH_HOST: Joi.string().required(),
         AUTH_TCP_PORT: Joi.number().required(),
         PAYMENTS_HOST: Joi.string().required(),

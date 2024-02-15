@@ -9,7 +9,7 @@ import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-clas
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        url: configService.get('RESERVATIONS_POSTGRES_URL'),
+        url: configService.get('BOOKING_POSTGRES_URL'),
         synchronize: true,
         autoLoadEntities: true,
       }),
@@ -17,7 +17,7 @@ import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-clas
     }),
   ],
 })
-export class ReservationsDbModule {
+export class BookingDbModule {
   static forFeature(entities: EntityClassOrSchema[]) {
     return TypeOrmModule.forFeature(entities);
   }

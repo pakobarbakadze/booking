@@ -1,6 +1,6 @@
 import { AbstractEntity } from '@app/common';
 import { Column, Entity } from 'typeorm';
-@Entity()
+@Entity('reservations')
 export class Reservation extends AbstractEntity {
   @Column()
   startDate: Date;

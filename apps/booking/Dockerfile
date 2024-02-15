@@ -24,4 +24,4 @@ RUN npm install --omit=dev
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/apps/reservations/main"]
+CMD ["node", "dist/apps/booking/main"]
