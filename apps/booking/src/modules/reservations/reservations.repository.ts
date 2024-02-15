@@ -10,8 +10,8 @@ export class ReservationsRepository extends TypeormAbstractRepository<Reservatio
 
   constructor(
     @InjectRepository(Reservation)
-    private readonly messageRepository: Repository<Reservation>,
+    private readonly reservationsRepository: Repository<Reservation>,
   ) {
-    super(messageRepository);
+    super(reservationsRepository);
   }
 }

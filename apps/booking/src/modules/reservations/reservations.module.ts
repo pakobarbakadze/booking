@@ -1,10 +1,8 @@
-import { LoggerModule } from '@app/common';
-import { AUTH_SERVICE, PAYMENTS_SERVICE } from '@app/common/constants';
+import { AUTH_SERVICE, PAYMENTS_SERVICE } from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BookingDbModule } from '../../../config/booking-db.module';
-import { ReservationsConfigModule } from '../../../config/config.module';
 import { Reservation } from './entities/reservation.entity';
 import { ReservationsController } from './reservations.controller';
 import { ReservationsRepository } from './reservations.repository';
@@ -12,10 +10,7 @@ import { ReservationsService } from './reservations.service';
 
 @Module({
   imports: [
-    ReservationsConfigModule,
-    BookingDbModule,
     BookingDbModule.forFeature([Reservation]),
-    LoggerModule,
     ClientsModule.registerAsync([
       {
         name: AUTH_SERVICE,

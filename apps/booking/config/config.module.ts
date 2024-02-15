@@ -16,4 +16,4 @@ import * as Joi from 'joi';
     }),
   ],
 })
-export class ReservationsConfigModule {}
+export class BookingConfigModule {}
