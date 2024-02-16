@@ -11,6 +11,6 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
-  await app.listen(configService.get<number>('RESERVATIONS_PORT'));
+  await app.listen(configService.get<number>('BOOKING_PORT'));
 }
 bootstrap();
