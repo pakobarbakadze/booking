@@ -18,8 +18,8 @@ export abstract class TypeormAbstractRepository<T> {
     return this.repository.save(item);
   }
 
-  public findBy(where: FindOptionsWhere<T>): Promise<T> {
-    return this.repository.findOne(where);
+  public findBy(options: FindOptionsWhere<T>): Promise<T> {
+    return this.repository.findOne({ where: options });
   }
 
   public findAll(conditions?: FindManyOptions<T>): Promise<T[]> {

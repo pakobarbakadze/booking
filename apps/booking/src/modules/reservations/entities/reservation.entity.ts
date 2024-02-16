@@ -1,5 +1,6 @@
 import { AbstractEntity } from '@app/common';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { Room } from '../../rooms/entities/room.entity';
 @Entity('reservations')
 export class Reservation extends AbstractEntity {
   @Column()
@@ -13,4 +14,7 @@ export class Reservation extends AbstractEntity {
 
   @Column()
   invoiceId: string;
+
+  @ManyToOne(() => Room, (room) => room.reservations)
+  room: Room;
 }

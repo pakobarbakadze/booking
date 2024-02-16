@@ -7,13 +7,14 @@ services:
         dockerfile: ./apps/booking/Dockerfile
         target: ${NODE_ENV}
       container_name: booking-service
-      command: npm run start:dev booking
+      command: npm run start:debug booking
       depends_on:
         - booking-postgres
       env_file:
         - ./apps/booking/.env
-      # ports:
+      ports:
         # - ${BOOKING_PORT}:${BOOKING_PORT}
+        - 9229:9229
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
@@ -30,9 +31,8 @@ services:
         - auth-mongo
       env_file:
         - ./apps/auth/.env
-      ports:
-        # - ${AUTH_PORT}:${AUTH_PORT} 
-        - 9229:9229
+      # ports:
+        # - ${AUTH_PORT}:${AUTH_PORT}
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules

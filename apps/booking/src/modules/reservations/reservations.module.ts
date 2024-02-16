@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BookingDbModule } from '../../../config/booking-db.module';
+import { RoomsModule } from '../rooms/rooms.module';
 import { Reservation } from './entities/reservation.entity';
 import { ReservationsController } from './reservations.controller';
 import { ReservationsRepository } from './reservations.repository';
@@ -10,6 +11,7 @@ import { ReservationsService } from './reservations.service';
 
 @Module({
   imports: [
+    RoomsModule,
     BookingDbModule.forFeature([Reservation]),
     ClientsModule.registerAsync([
       {

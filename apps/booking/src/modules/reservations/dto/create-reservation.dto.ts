@@ -8,6 +8,9 @@ import {
 } from 'class-validator';
 
 export class CreateReservationDto {
+  @IsDefined()
+  roomNumber: string;
+
   @IsDate()
   @Type(() => Date)
   startDate: Date;

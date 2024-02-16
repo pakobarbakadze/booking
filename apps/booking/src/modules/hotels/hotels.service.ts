@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { HotelsRepository } from './hotels.repository';
 
 @Injectable()
 export class HotelsService {
-  create(createHotelDto: CreateHotelDto) {
-    return 'This action adds a new hotel';
+  constructor(private readonly hotelsRepository: HotelsRepository) {}
+
+  public create(createHotelDto: CreateHotelDto) {
+    const hotel = this.hotelsRepository.create(createHotelDto);
+    return this.hotelsRepository.save(hotel);
   }
 
-  findAll() {
-    return `This action returns all hotels`;
+  public findAll() {
+    return this.hotelsRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hotel`;
+  public findOne(id: number) {
+    return this.hotelsRepository.findBy({ id });
   }
 
-  update(id: number, updateHotelDto: UpdateHotelDto) {
-    return `This action updates a #${id} hotel`;
+  public update(id: number, updateHotelDto: UpdateHotelDto) {
+    return this.hotelsRepository.update(id, updateHotelDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} hotel`;
+  public remove(id: number) {
+    return this.hotelsRepository.delete(id);
   }
 }
