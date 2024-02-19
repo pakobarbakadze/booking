@@ -1,15 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { DataSource } from 'typeorm';
+import { Room } from '../rooms/entities/room.entity';
+import { RoomsService } from '../rooms/rooms.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
+import { Hotel } from './entities/hotel.entity';
 import { HotelsRepository } from './hotels.repository';
 
 @Injectable()
 export class HotelsService {
-  constructor(private readonly hotelsRepository: HotelsRepository) {}
+  constructor(
+    @Inject(forwardRef(() => RoomsService))
+    private readonly dataSource: DataSource,
+    private readonly hotelsRepository: HotelsRepository,
+  ) {}
 
-  public create(createHotelDto: CreateHotelDto) {
-    const hotel = this.hotelsRepository.create(createHotelDto);
-    return this.hotelsRepository.save(hotel);
+  public async create(createHotelDto: CreateHotelDto) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const hotel = await queryRunner.manager.save(Hotel, createHotelDto);
+      await queryRunner.manager.save(Room, {
+        roomNumber: '000',
+        price: 100,
+        hotel,
+      });
+
+      await queryRunner.commitTransaction();
+      return hotel;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   public findAll() {
