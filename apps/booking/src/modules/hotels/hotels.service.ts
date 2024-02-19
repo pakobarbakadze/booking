@@ -20,6 +20,9 @@ export class HotelsService {
     await queryRunner.startTransaction();
     try {
       const hotel = await queryRunner.manager.save(Hotel, createHotelDto);
+
+      // TODO: room number can be same in different hotels
+
       await queryRunner.manager.save(Room, {
         roomNumber: '000',
         price: 100,

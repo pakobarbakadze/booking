@@ -8,7 +8,6 @@ import * as Joi from 'joi';
       isGlobal: true,
       validationSchema: Joi.object({
         AUTH_PORT: Joi.number().required(),
-        AUTH_TCP_PORT: Joi.number().required(),
         AUTH_MONGODB_URI: Joi.string().required(),
         ACCESS_JWT_SECRET: Joi.string().required(),
         REFRESH_JWT_SECRET: Joi.string().required(),

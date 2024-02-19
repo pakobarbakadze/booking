@@ -7,12 +7,11 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        BOOKING_POSTGRES_URL: Joi.string().required(),
         BOOKING_PORT: Joi.number().required(),
+        BOOKING_POSTGRES_URL: Joi.string().required(),
+        RABBITMQ_URI: Joi.string().required(),
         AUTH_HOST: Joi.string().required(),
-        AUTH_TCP_PORT: Joi.number().required(),
         PAYMENTS_HOST: Joi.string().required(),
-        PAYMENTS_TCP_PORT: Joi.number().required(),
       }),
     }),
   ],

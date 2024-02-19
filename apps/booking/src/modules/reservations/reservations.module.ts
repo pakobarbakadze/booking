@@ -21,10 +21,10 @@ import { ReservationsService } from './reservations.service';
       {
         name: AUTH_SERVICE,
         useFactory: (configService: ConfigService) => ({
-          transport: Transport.TCP,
+          transport: Transport.RMQ,
           options: {
-            host: configService.get('AUTH_HOST'),
-            port: configService.get<number>('AUTH_TCP_PORT'),
+            urls: [configService.get<string>('RABBITMQ_URI')],
+            queue: 'auth',
           },
         }),
         inject: [ConfigService],
@@ -32,10 +32,10 @@ import { ReservationsService } from './reservations.service';
       {
         name: PAYMENTS_SERVICE,
         useFactory: (configService: ConfigService) => ({
-          transport: Transport.TCP,
+          transport: Transport.RMQ,
           options: {
-            host: configService.get('PAYMENTS_HOST'),
-            port: configService.get<number>('PAYMENTS_TCP_PORT'),
+            urls: [configService.get<string>('RABBITMQ_URI')],
+            queue: 'payments',
           },
         }),
         inject: [ConfigService],
@@ -43,10 +43,10 @@ import { ReservationsService } from './reservations.service';
       {
         name: NOTIFICATIONS_SERVICE,
         useFactory: (configService: ConfigService) => ({
-          transport: Transport.TCP,
+          transport: Transport.RMQ,
           options: {
-            host: configService.get('NOTIFICATIONS_HOST'),
-            port: configService.get('NOTIFICATIONS_TCP_PORT'),
+            urls: [configService.get<string>('RABBITMQ_URI')],
+            queue: 'notifications',
           },
         }),
         inject: [ConfigService],

@@ -1,3 +1,4 @@
+import { JwtAuthGuard } from '@app/common/auth';
 import {
   Body,
   Controller,
@@ -6,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
@@ -16,6 +18,7 @@ export class HotelsController {
   constructor(private readonly hotelsService: HotelsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   create(@Body() createHotelDto: CreateHotelDto) {
     return this.hotelsService.create(createHotelDto);
   }

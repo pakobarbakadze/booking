@@ -14,10 +14,10 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: '0.0.0.0',
-      port: configService.get('NOTIFICATIONS_TCP_PORT'),
+      urls: [configService.get<string>('RABBITMQ_URI')],
+      queue: 'notifications',
     },
   });
 

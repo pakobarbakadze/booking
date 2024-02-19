@@ -7,7 +7,6 @@ import * as Joi from 'joi';
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        NOTIFICATIONS_TCP_PORT: Joi.number().required(),
         GOOGLE_OAUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_OAUTH_CLIENT_SECRET: Joi.string().required(),
         GOOGLE_OAUTH_REFRESH_TOKEN: Joi.string().required(),
