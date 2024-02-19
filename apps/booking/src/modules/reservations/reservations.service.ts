@@ -1,4 +1,4 @@
-import { PAYMENTS_SERVICE, UserDto } from '@app/common';
+import { NOTIFICATIONS_SERVICE, PAYMENTS_SERVICE, UserDto } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { map } from 'rxjs';
@@ -13,6 +13,8 @@ export class ReservationsService {
     private readonly roomsService: RoomsService,
     private readonly reservationsRepository: ReservationsRepository,
     @Inject(PAYMENTS_SERVICE) private readonly paymentsService: ClientProxy,
+    @Inject(NOTIFICATIONS_SERVICE)
+    private readonly notificationsService: ClientProxy,
   ) {}
 
   public async create(
@@ -24,8 +26,6 @@ export class ReservationsService {
 
     await this.roomsService.checkAvailability(roomNumber);
     const room = await this.roomsService.findByRoomNumber(roomNumber);
-
-    // TODO: when reservationsRepository.save goes on error payment should be send too
 
     return this.paymentsService
       .send('create_charge', { ...createReservationDto.charge, email })
@@ -40,7 +40,15 @@ export class ReservationsService {
 
           await this.roomsService.reserveRoom(room.id);
 
-          return this.reservationsRepository.save(reservation);
+          const savedReservation =
+            await this.reservationsRepository.save(reservation);
+
+          this.notificationsService.emit('notify_email', {
+            email,
+            text: `Your payment of $${res.amount} has completed successfully.`,
+          });
+
+          return savedReservation;
         }),
       );
   }

@@ -1,4 +1,8 @@
-import { AUTH_SERVICE, PAYMENTS_SERVICE } from '@app/common';
+import {
+  AUTH_SERVICE,
+  NOTIFICATIONS_SERVICE,
+  PAYMENTS_SERVICE,
+} from '@app/common';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -32,6 +36,17 @@ import { ReservationsService } from './reservations.service';
           options: {
             host: configService.get('PAYMENTS_HOST'),
             port: configService.get<number>('PAYMENTS_TCP_PORT'),
+          },
+        }),
+        inject: [ConfigService],
+      },
+      {
+        name: NOTIFICATIONS_SERVICE,
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get('NOTIFICATIONS_HOST'),
+            port: configService.get('NOTIFICATIONS_TCP_PORT'),
           },
         }),
         inject: [ConfigService],

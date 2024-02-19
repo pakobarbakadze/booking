@@ -1,7 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { RoomsService } from './rooms.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { RoomsService } from './rooms.service';
 
 @Controller('rooms')
 export class RoomsController {
@@ -19,7 +27,7 @@ export class RoomsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roomsService.findOne(+id);
+    return this.roomsService.findById(+id);
   }
 
   @Patch(':id')

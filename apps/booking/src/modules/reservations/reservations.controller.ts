@@ -1,5 +1,6 @@
 import { CurrentUser, UserDto } from '@app/common';
 import { JwtAuthGuard } from '@app/common/auth';
+import { TransactionInterceptor } from '@app/common/interceptors/transaction.interseptor';
 import {
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { User } from 'apps/auth/src/modules/users/entities/user.entity';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -21,6 +23,7 @@ export class ReservationsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @UseInterceptors(TransactionInterceptor)
   create(
     @Body() createReservationDto: CreateReservationDto,
     @CurrentUser() user: UserDto,
