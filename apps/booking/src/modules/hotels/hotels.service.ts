@@ -1,7 +1,6 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { Room } from '../rooms/entities/room.entity';
-import { RoomsService } from '../rooms/rooms.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { Hotel } from './entities/hotel.entity';
@@ -10,7 +9,6 @@ import { HotelsRepository } from './hotels.repository';
 @Injectable()
 export class HotelsService {
   constructor(
-    @Inject(forwardRef(() => RoomsService))
     private readonly dataSource: DataSource,
     private readonly hotelsRepository: HotelsRepository,
   ) {}
