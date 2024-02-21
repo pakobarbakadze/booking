@@ -15,7 +15,7 @@ The hotel management application, Built on a robust microservices architecture. 
 
 ## System design
 <div style="width: 100%; overflow: hidden;">
-  <img src="https://drive.google.com/uc?id=1fSP7Ld5rCmVaJn4qe-wC0OIiKZ-k0rho" style="width: 100%; height: auto;" alt="System Design">
+  <img src="https://drive.google.com/uc?id=1mA8BZLMO9al2si8wEd9ws2iJCp8BTPQv" style="width: 100%; height: auto;" alt="System Design">
 </div>
 
 ## Technologies
