@@ -11,7 +11,12 @@
 # booking
 
 ## Overview
-The hotel management application, Built on a robust microservices architecture. It allows users to register their hotels and rooms and make reservations for customers. Payments for reservations are securely handled through Stripe, and notifications are sent using Node Mailer. It's a simple and efficient way to manage hotels and reservations.
+The hotel management application, Built on a robust microservices architecture. It allows users to register their hotels, rooms and make reservations for customers. Payments for reservations are securely handled through Stripe, and notifications are sent using Node Mailer. It's a simple and efficient way to manage hotels and reservations.
+
+## System design
+<div style="width: 100%; overflow: hidden;">
+  <img src="https://drive.google.com/uc?id=1fSP7Ld5rCmVaJn4qe-wC0OIiKZ-k0rho" style="width: 100%; height: auto;" alt="System Design">
+</div>
 
 ## Technologies
 - [NestJS](http://nestjs.com/) - A progressive Node.js framework for building efficient and scalable server-side applications.
