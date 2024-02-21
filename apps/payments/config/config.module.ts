@@ -8,7 +8,6 @@ import * as Joi from 'joi';
       isGlobal: true,
       validationSchema: Joi.object({
         STRIPE_SECRET_KEY: Joi.string().required(),
-
         NOTIFICATIONS_HOST: Joi.string().required(),
       }),
     }),

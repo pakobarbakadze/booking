@@ -10,6 +10,7 @@ services:
       command: npm run start:debug booking
       depends_on:
         - booking-postgres
+        - rabbitmq
       env_file:
         - ./apps/booking/.env
       ports:
@@ -18,6 +19,8 @@ services:
         - .:/usr/src/app
         - /usr/src/app/node_modules
       restart: always
+      networks:
+        - network
 
   auth-service:
       build:
@@ -28,12 +31,15 @@ services:
       command: npm run start:debug auth
       depends_on:
         - auth-mongo
+        - rabbitmq
       env_file:
         - ./apps/auth/.env
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
       restart: always
+      networks:
+        - network
 
   payments-service:
       build:
@@ -42,12 +48,16 @@ services:
         target: ${NODE_ENV}
       container_name: payments-service
       command: npm run start:dev payments
+      depends_on:
+        - rabbitmq
       env_file:
         - ./apps/payments/.env
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
       restart: always
+      networks:
+        - network
 
   notifications-service:
       build:
@@ -56,21 +66,27 @@ services:
         target: ${NODE_ENV}
       container_name: notifications-service
       command: npm run start:dev notifications
+      depends_on:
+        - rabbitmq
       env_file:
         - ./apps/notifications/.env
       volumes:
         - .:/usr/src/app
         - /usr/src/app/node_modules
       restart: always
+      networks:
+        - network
 
   auth-mongo:
     image: mongo
     container_name: auth-mongo
     ports:
-      - 27018:27017
+      - ${AUTH_DB_PORT}:${AUTH_DB_PORT}
     volumes:
       - mongodb_data:/var/lib/auth/data
     restart: always
+    networks:
+      - network
 
   booking-postgres:
     image: postgres
@@ -82,8 +98,10 @@ services:
     volumes:
       - postgres_data:/var/lib/booking/data
     ports:
-      - 5432:5432
+      - ${BOOKING_DB_PORT}:${BOOKING_DB_PORT}
     restart: always
+    networks:
+      - network
 
   nginx-gateway:
     image: nginx
@@ -95,18 +113,35 @@ services:
     depends_on:
       - booking-service
       - auth-service
+    networks:
+      - network  
 
   cache:
     image: redis
     container_name: redis-cache
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - network
 
   rabbitmq:
     image: rabbitmq
     container_name: rabbitmq
     ports:
-      - 5672:5672
+      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+    networks:
+      - network
+
+  elasticsearch:
+    image: elasticsearch:8.12.1
+    container_name: elasticsearch
+    ports:
+      - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+    networks:
+      - network
+
+networks:
+  network:
 
 volumes:
   mongodb_data:
